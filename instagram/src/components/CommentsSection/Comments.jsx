@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 export default function CommentSection({ user, commentText }) {
   return (
@@ -19,3 +20,8 @@ const UserName = styled.span`
   font-weight: 600;
   margin-right: 0.2rem;
 `;
+
+CommentSection.propTypes = {
+  user: PropTypes.string.isRequired,
+  commentText: PropTypes.string.isRequired,
+};

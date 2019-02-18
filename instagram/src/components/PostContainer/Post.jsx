@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import CommentSection from '../CommentsSection/Comments';
-import moment from 'moment';
+import PropTypes from 'prop-types';
 
 export default function PostContainer({
-  key,
   user,
   userLogo,
   image,
@@ -13,7 +12,7 @@ export default function PostContainer({
   comments,
 }) {
   return (
-    <WrapperDiv key={key}>
+    <WrapperDiv>
       <UserNameDiv>
         <ThumbUser src={userLogo} alt="user-thumbnail"></ThumbUser>
         <UserName>{user}</UserName>          
@@ -31,9 +30,9 @@ export default function PostContainer({
 
         <CommentsDiv>
           {
-            comments.map(comment => (
+            comments.map((comment, index) => (
               <CommentSection
-                key={key}
+                key={index}
                 user={comment.username}
                 commentText={comment.text}
                 time={time}
@@ -59,6 +58,14 @@ export default function PostContainer({
   )
 
 }
+
+PostContainer.propTypes = {
+  user: PropTypes.string.isRequired,
+  userLogo: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+  time: PropTypes.string.isRequired,
+  comments: PropTypes.array,
+};
 
 const WrapperDiv = styled.div`
   display: flex;
@@ -112,8 +119,7 @@ const LikesDiv = styled.div`
   margin: 0.5rem 0;
 `;
 
-const CommentsDiv = styled.div`
- 
+const CommentsDiv = styled.div` 
 `;
 
 const TimeDiv = styled.div`
