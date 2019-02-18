@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import './App.css';
 import styled from 'styled-components';
 import dummyData from '../src/dummy-data';
 import SearchBar from './components/SearchBar/Search';
@@ -9,10 +8,9 @@ import PostContainer from './components/PostContainer/Post';
 class App extends Component {
   render() {
     return (
-      <StyledAppWrapp className="App">
+      <StyledAppWrapp>
 
         <SearchBar />
-
         {
           dummyData.map((item, idx) => (
             <PostContainer
@@ -24,10 +22,8 @@ class App extends Component {
               time={item.timestamp}
               comments={item.comments}
             />
-
           ))
         }
-
       </StyledAppWrapp>
     );
   }
