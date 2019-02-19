@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-export default function SearchBar(props) {
+export default function SearchBar({ searchVal, searchHandler }) {
   return (
 
     <StyledWrapperNav>
@@ -17,8 +18,8 @@ export default function SearchBar(props) {
           <StyledInput
             type="text"
             placeholder=" Search"
-            value={props.searchVal}
-            onChange={props.searchHandler}
+            value={searchVal}
+            onChange={searchHandler}
           />
           {/* <StyledIcon className="fas fa-search" /> */}
         </StyledSearch>
@@ -33,6 +34,16 @@ export default function SearchBar(props) {
     </StyledWrapperNav>
   );
 }
+
+SearchBar.defaultProps = {
+  searchVal: '',
+};
+
+SearchBar.propTypes = {
+  searchVal: PropTypes.string,
+  searchHandler: PropTypes.func.isRequired,
+};
+
 
 const StyledWrapperNav = styled.nav`
   background-color: #fff;
