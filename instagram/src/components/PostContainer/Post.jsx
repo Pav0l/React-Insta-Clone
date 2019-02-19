@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'uuid';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CommentSection from '../CommentsSection/Comments';
@@ -14,25 +15,25 @@ export default function PostContainer({
   return (
     <WrapperDiv>
       <UserNameDiv>
-        <ThumbUser src={userLogo} alt="user-thumbnail"></ThumbUser>
-        <UserName>{user}</UserName>          
+        <ThumbUser src={userLogo} alt="user-thumbnail" />
+        <UserName>{user}</UserName>
       </UserNameDiv>
 
-      <MainImg src={image} alt="main-img"></MainImg>
+      <MainImg src={image} alt="main-img" />
 
       <BottomSectionWrapper>
         <IconsDiv>
-          <StyledIcon className="far fa-heart"></StyledIcon>
-          <StyledIcon className="far fa-comment"></StyledIcon>
+          <StyledIcon className="far fa-heart" />
+          <StyledIcon className="far fa-comment" />
         </IconsDiv>
 
         <LikesDiv>{likes} likes</LikesDiv>
 
         <CommentsDiv>
           {
-            comments.map((comment) => (
+            comments.map(comment => (
               <CommentSection
-                key={index}
+                key={uuid()}
                 user={comment.username}
                 commentText={comment.text}
                 time={time}
@@ -40,7 +41,7 @@ export default function PostContainer({
             ))
           }
         </CommentsDiv>
-        
+
         <TimeDiv>{time}</TimeDiv>
 
       </BottomSectionWrapper>
@@ -55,8 +56,7 @@ export default function PostContainer({
 
     </WrapperDiv>
 
-  )
-
+  );
 }
 
 PostContainer.defaultProps = {
