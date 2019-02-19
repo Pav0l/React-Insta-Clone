@@ -8,29 +8,29 @@ export default function SearchBar() {
       <StyledWrapperDiv>
 
         <StyledA>
-          <StyledInstaIcon className="fab fa-instagram"></StyledInstaIcon>
-          <StyledLineDiv></StyledLineDiv>
+          <StyledInstaIcon className="fab fa-instagram" />
+          <StyledLineDiv />
           <StyleInsta>Instagram</StyleInsta>
         </StyledA>
 
         <StyledSearch>
           <StyledInput
             type="text"
-            placeholder="Search"
+            placeholder=" Search"
             // value=""
           />
+          {/* <StyledIcon className="fas fa-search" /> */}
         </StyledSearch>
 
         <div>
-          <StyledIcon className="far fa-compass"></StyledIcon>
-          <StyledIcon className="far fa-heart"></StyledIcon>
-          <StyledIcon className="far fa-user"></StyledIcon>
+          <StyledIcon className="far fa-compass" />
+          <StyledIcon className="far fa-heart" />
+          <StyledIcon className="far fa-user" />
         </div>
 
       </StyledWrapperDiv>
     </StyledWrapperNav>
   );
-
 }
 
 const StyledWrapperNav = styled.nav`
@@ -43,7 +43,7 @@ const StyledWrapperNav = styled.nav`
   transition: height 0.2s ease-in-out;
   height: 77px;
   display: flex;
-`; 
+`;
 
 const StyledWrapperDiv = styled.div`
   display: flex;
@@ -96,11 +96,12 @@ const StyledInput = styled.input`
 `;
 
 const StyledSearch = styled.div`
+  display: infline-flex;
+  position: relative;
   height: 28px;
   min-width: 125px;
   width: 215px;
 `;
-
 
 const StyledIcon = styled.i`
   font-size: 20px;
