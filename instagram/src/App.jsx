@@ -13,16 +13,20 @@ export default class App extends React.Component {
     this.state = {
       postsList: [],
       searchVal: '',
+      commentField: '',
     };
 
     this.updateData = dummyData.map(post => {
       return {
         ...post,
-        display: true}
+        display: true,
+        id: uuid(),
+      }
     });
   }
 
   componentDidMount() {
+    console.log('componentDidMOUNT');
     this.setState({
       postsList: this.updateData,
     });
@@ -41,7 +45,6 @@ export default class App extends React.Component {
   }
 
   searchPostUpdater = searchInput => {
-    // add reset search here
     this.resetSearch();
 
     this.setState(prevState => {
@@ -75,7 +78,59 @@ export default class App extends React.Component {
     });
   }
 
+  likeHandler = id => {
+    this.addLike(id);
+  }
+
+  addLike = postId => {
+    this.setState(prevState => {
+      const likedPost = prevState.postsList.map(post => {
+        if (post.id === postId) {
+          const postLikes = post.likes;
+          let newLikes = postLikes + 1; 
+          return {
+            ...post,
+            likes: newLikes,
+          };
+        }
+        return {...post};
+      });
+      return {postsList: likedPost}
+    });
+  }
+
+  // clearInput = () => {
+  //   this.setState({
+  //     commentField: '',
+  //   })
+  // }
+  
+  // commentChange = event => {
+  //   event.preventDefault();
+  //   this.setState({
+  //     commentField: event.target.value,
+  //   });
+  // }
+
+  // updateComment = (event, postId) => {
+  //   event.preventDefault();
+  //   this.setState(prevState => {
+  //     const commentedPost = prevState.postsList.map(post => {
+  //       if (post.id === postId) {
+  //         return post.comments.concat({
+  //           username: 'hackerUser',
+  //           text: this.state.commentField,
+  //         });
+  //       }
+  //       return {...post};
+  //     });
+  //     return {postsList: commentedPost};
+  //   });    
+  //   this.clearInput();
+  // }
+
   render() {
+    console.log('RENDER');
     const { postsList } = this.state;
     const onSearchFilteredList = postsList.filter(post => post.display === true);
 
@@ -90,12 +145,18 @@ export default class App extends React.Component {
           onSearchFilteredList.map(post => (
             <PostContainer
               key={uuid()}
+              id={post.id}
               user={post.username}
               userLogo={post.thumbnailUrl}
               image={post.imageUrl}
               likes={post.likes}
               time={post.timestamp}
               comments={post.comments}
+              likeHandler={this.likeHandler}
+              // updateComment={this.updateComment}
+              // commentChange={this.commentChange}
+              // commentField={this.state.commentField}
+
             />
           ))
         }

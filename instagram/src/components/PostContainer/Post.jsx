@@ -10,49 +10,9 @@ export default class PostContainer extends React.Component {
 
     this.state = {
       commentsList: props.comments,
-      commentField: '',
-      likesCounter: props.likes,
     };
   }
 
-  componentDidUpdate() {
-
-  }
-
-  clearInput = () => {
-    this.setState({
-      commentField: '',
-    })
-  }
-
-  commentChange = event => {
-    event.preventDefault();
-    this.setState({
-      commentField: event.target.value,
-    });
-  }
-
-  updateComment = event => {
-    event.preventDefault();
-    this.setState(prevState => ({
-      commentsList: prevState.commentsList.concat({
-        username: 'hackerUser',
-        text: this.state.commentField,
-      })
-    }));
-    this.clearInput();
-  }
-
-  addLike = event => {
-    event.preventDefault();
-    this.setState(prevState => {
-      let likeCount = prevState.likesCounter;
-      let newCount = likeCount + 1;
-      return {
-        likesCounter: newCount,
-      }
-    });
-  }
 
   render() {
     return (
@@ -66,10 +26,10 @@ export default class PostContainer extends React.Component {
 
         <CommentSectionWrapper>
           <IconsDiv>
-            <StyledIcon onClick={this.addLike} className="far fa-heart" />
+            <StyledIcon onClick={() => this.props.likeHandler(this.props.id)} className="far fa-heart" />
             <StyledIcon className="far fa-comment" />
           </IconsDiv>
-          <LikesDiv>{this.state.likesCounter} likes</LikesDiv>
+          <LikesDiv>{this.props.likes} likes</LikesDiv>
 
           <CommentsDiv>
             {
@@ -87,12 +47,12 @@ export default class PostContainer extends React.Component {
           <TimeDiv>{this.props.time}</TimeDiv>
         </CommentSectionWrapper>
 
-        <StyledAddComment type="submit" onSubmit={this.updateComment}>
+        <StyledAddComment>
           <AddCommentInput
             type="text"
             placeholder="Add a comment..."
-            value={this.state.commentField}
-            onChange={this.commentChange}
+            // value={this.props.commentField}
+            // onChange= {this.props.commentChange}
           />
         </StyledAddComment>
       </WrapperDiv>
@@ -102,7 +62,6 @@ export default class PostContainer extends React.Component {
 
 PostContainer.defaultProps = {
   comments: [],
-  commentField: '',
 };
 
 PostContainer.propTypes = {
@@ -112,7 +71,6 @@ PostContainer.propTypes = {
   likes: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
   comments: PropTypes.array,
-  commentField: PropTypes.string,
 };
 
 const WrapperDiv = styled.div`
