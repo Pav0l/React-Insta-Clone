@@ -64,7 +64,7 @@ export default class PostContainer extends React.Component {
 
         <MainImg src={this.props.image} alt="main-img" />
 
-        <BottomSectionWrapper>
+        <CommentSectionWrapper>
           <IconsDiv>
             <StyledIcon onClick={this.addLike} className="far fa-heart" />
             <StyledIcon className="far fa-comment" />
@@ -85,7 +85,7 @@ export default class PostContainer extends React.Component {
           </CommentsDiv>
 
           <TimeDiv>{this.props.time}</TimeDiv>
-        </BottomSectionWrapper>
+        </CommentSectionWrapper>
 
         <StyledAddComment type="submit" onSubmit={this.updateComment}>
           <AddCommentInput
@@ -93,7 +93,6 @@ export default class PostContainer extends React.Component {
             placeholder="Add a comment..."
             value={this.state.commentField}
             onChange={this.commentChange}
-
           />
         </StyledAddComment>
       </WrapperDiv>
@@ -146,7 +145,7 @@ const MainImg = styled.img`
   max-width: 100%;
 `;
 
-const BottomSectionWrapper = styled.div`
+const CommentSectionWrapper = styled.div`
   padding: 1rem;
   max-width: 100%;
   padding-bottom: 0;

@@ -12,28 +12,82 @@ export default class App extends React.Component {
 
     this.state = {
       postsList: [],
+      searchVal: '',
     };
+
+    this.updateData = dummyData.map(post => {
+      return {
+        ...post,
+        display: true}
+    });
   }
 
   componentDidMount() {
     this.setState({
-      postsList: dummyData,
+      postsList: this.updateData,
     });
   }
 
-  componentDidUpdate() {
+  searchHandler = (event) => {
+    event.preventDefault();
 
+    this.setState({
+      searchVal: event.target.value,
+    }, () => {
+      if (this.searchVal !== '') {
+        this.searchPostUpdater(this.state.searchVal);
+      }
+    });
+  }
+
+  searchPostUpdater = searchInput => {
+    // add reset search here
+    this.resetSearch();
+
+    this.setState(prevState => {
+      const searchList = prevState.postsList.map(post => {
+        const postUser = post.username.toLowerCase();
+        const showPostStat = postUser.includes(searchInput.toLowerCase());
+        if (!showPostStat) {
+          return {
+            ...post,
+            display: false,
+          };
+        }
+        return {...post,};
+      });
+
+      return {
+        postsList: searchList,
+      };
+    });
+  }
+
+  resetSearch = () => {
+    this.setState(prevState => {
+      const resetList = prevState.postsList.map(post => {
+        return {
+          ...post,
+          display: true,
+        };
+      });
+      return { postsList: resetList };
+    });
   }
 
   render() {
     const { postsList } = this.state;
+    const onSearchFilteredList = postsList.filter(post => post.display === true);
 
     return (
       <StyledAppWrapp>
 
-        <SearchBar />
+        <SearchBar
+          searchVal={this.state.searchVal}
+          searchHandler={this.searchHandler}
+        />
         {
-          postsList.map(post => (
+          onSearchFilteredList.map(post => (
             <PostContainer
               key={uuid()}
               user={post.username}

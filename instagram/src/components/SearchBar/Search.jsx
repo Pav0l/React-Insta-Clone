@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   return (
 
     <StyledWrapperNav>
@@ -17,7 +17,8 @@ export default function SearchBar() {
           <StyledInput
             type="text"
             placeholder=" Search"
-            // value=""
+            value={props.searchVal}
+            onChange={props.searchHandler}
           />
           {/* <StyledIcon className="fas fa-search" /> */}
         </StyledSearch>
