@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import CommentSection from '../CommentsSection/Comments';
 import PropTypes from 'prop-types';
+import CommentSection from '../CommentsSection/Comments';
 
 export default function PostContainer({
   user,
@@ -30,7 +30,7 @@ export default function PostContainer({
 
         <CommentsDiv>
           {
-            comments.map((comment, index) => (
+            comments.map((comment) => (
               <CommentSection
                 key={index}
                 user={comment.username}
@@ -59,9 +59,14 @@ export default function PostContainer({
 
 }
 
+PostContainer.defaultProps = {
+  comments: [],
+};
+
 PostContainer.propTypes = {
   user: PropTypes.string.isRequired,
   userLogo: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   likes: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
   comments: PropTypes.array,

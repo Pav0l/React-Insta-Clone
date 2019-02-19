@@ -1,32 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import dummyData from '../src/dummy-data';
+import uuid from 'uuid';
+import dummyData from './dummy-data';
 import SearchBar from './components/SearchBar/Search';
 import PostContainer from './components/PostContainer/Post';
 
 
-class App extends Component {
-  render() {
-    return (
-      <StyledAppWrapp>
+function App() {
+  return (
+    <StyledAppWrapp>
 
-        <SearchBar />
-        {
-          dummyData.map((item, idx) => (
-            <PostContainer
-              key={idx}
-              user={item.username}
-              userLogo={item.thumbnailUrl}
-              image={item.imageUrl}
-              likes={item.likes}
-              time={item.timestamp}
-              comments={item.comments}
-            />
-          ))
-        }
-      </StyledAppWrapp>
-    );
-  }
+      <SearchBar />
+      {
+        dummyData.map(item => (
+          <PostContainer
+            key={uuid()}
+            user={item.username}
+            userLogo={item.thumbnailUrl}
+            image={item.imageUrl}
+            likes={item.likes}
+            time={item.timestamp}
+            comments={item.comments}
+          />
+        ))
+      }
+    </StyledAppWrapp>
+  );
 }
 
 export default App;
