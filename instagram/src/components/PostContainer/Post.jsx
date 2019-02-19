@@ -11,7 +11,12 @@ export default class PostContainer extends React.Component {
     this.state = {
       commentsList: props.comments,
       commentField: '',
+      likesCounter: props.likes,
     };
+  }
+
+  componentDidUpdate() {
+
   }
 
   clearInput = () => {
@@ -38,6 +43,17 @@ export default class PostContainer extends React.Component {
     this.clearInput();
   }
 
+  addLike = event => {
+    event.preventDefault();
+    this.setState(prevState => {
+      let likeCount = prevState.likesCounter;
+      let newCount = likeCount + 1;
+      return {
+        likesCounter: newCount,
+      }
+    });
+  }
+
   render() {
     return (
       <WrapperDiv>
@@ -50,10 +66,10 @@ export default class PostContainer extends React.Component {
 
         <BottomSectionWrapper>
           <IconsDiv>
-            <StyledIcon className="far fa-heart" />
+            <StyledIcon onClick={this.addLike} className="far fa-heart" />
             <StyledIcon className="far fa-comment" />
           </IconsDiv>
-          <LikesDiv>{this.props.likes} likes</LikesDiv>
+          <LikesDiv>{this.state.likesCounter} likes</LikesDiv>
 
           <CommentsDiv>
             {
@@ -146,6 +162,7 @@ const StyledIcon = styled.i`
   font-size: 20px;
   padding-right: 20px;
   font-weight: 300;
+  cursor: pointer;
 `;
 
 const LikesDiv = styled.div`
