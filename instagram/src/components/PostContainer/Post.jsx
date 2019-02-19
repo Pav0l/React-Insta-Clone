@@ -4,63 +4,90 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CommentSection from '../CommentsSection/Comments';
 
-export default function PostContainer({
-  user,
-  userLogo,
-  image,
-  likes,
-  time,
-  comments,
-}) {
-  return (
-    <WrapperDiv>
-      <UserNameDiv>
-        <ThumbUser src={userLogo} alt="user-thumbnail" />
-        <UserName>{user}</UserName>
-      </UserNameDiv>
+export default class PostContainer extends React.Component {
+  constructor(props) {
+    super(props);
 
-      <MainImg src={image} alt="main-img" />
+    this.state = {
+      commentsList: props.comments,
+      commentField: '',
+    };
+  }
 
-      <BottomSectionWrapper>
-        <IconsDiv>
-          <StyledIcon className="far fa-heart" />
-          <StyledIcon className="far fa-comment" />
-        </IconsDiv>
+  clearInput = () => {
+    this.setState({
+      commentField: '',
+    })
+  }
 
-        <LikesDiv>{likes} likes</LikesDiv>
+  commentChange = event => {
+    event.preventDefault();
+    this.setState({
+      commentField: event.target.value,
+    });
+  }
 
-        <CommentsDiv>
-          {
-            comments.map(comment => (
-              <CommentSection
-                key={uuid()}
-                user={comment.username}
-                commentText={comment.text}
-                time={time}
-              />
-            ))
-          }
-        </CommentsDiv>
+  updateComment = event => {
+    event.preventDefault();
+    this.setState(prevState => ({
+      commentsList: prevState.commentsList.concat({
+        username: 'hackerUser',
+        text: this.state.commentField,
+      })
+    }));
+    this.clearInput();
+  }
 
-        <TimeDiv>{time}</TimeDiv>
+  render() {
+    return (
+      <WrapperDiv>
+        <UserNameDiv>
+          <ThumbUser src={this.props.userLogo} alt="user-thumbnail" />
+          <UserName>{this.props.user}</UserName>
+        </UserNameDiv>
 
-      </BottomSectionWrapper>
+        <MainImg src={this.props.image} alt="main-img" />
 
-      <StyledAddComment>
-        <AddCommentInput
-          type="text"
-          placeholder="Add a comment..."
-          // value=""
-        />
-      </StyledAddComment>
+        <BottomSectionWrapper>
+          <IconsDiv>
+            <StyledIcon className="far fa-heart" />
+            <StyledIcon className="far fa-comment" />
+          </IconsDiv>
+          <LikesDiv>{this.props.likes} likes</LikesDiv>
 
-    </WrapperDiv>
+          <CommentsDiv>
+            {
+              this.state.commentsList.map(comment => (
+                <CommentSection
+                  key={uuid()}
+                  user={comment.username}
+                  commentText={comment.text}
+                  time={this.props.time}
+                />
+              ))
+            }
+          </CommentsDiv>
 
-  );
+          <TimeDiv>{this.props.time}</TimeDiv>
+        </BottomSectionWrapper>
+
+        <StyledAddComment type="submit" onSubmit={this.updateComment}>
+          <AddCommentInput
+            type="text"
+            placeholder="Add a comment..."
+            value={this.state.commentField}
+            onChange={this.commentChange}
+
+          />
+        </StyledAddComment>
+      </WrapperDiv>
+    );
+  }
 }
 
 PostContainer.defaultProps = {
   comments: [],
+  commentField: '',
 };
 
 PostContainer.propTypes = {
@@ -70,6 +97,7 @@ PostContainer.propTypes = {
   likes: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
   comments: PropTypes.array,
+  commentField: PropTypes.string,
 };
 
 const WrapperDiv = styled.div`
@@ -136,7 +164,7 @@ const TimeDiv = styled.div`
   line-height: 17px;
 `;
 
-const StyledAddComment = styled.div`
+const StyledAddComment = styled.form`
   border-top: 1px solid rgba(0, 0, 0, 0.0975);
   width: 95%;
   margin: 0 auto;

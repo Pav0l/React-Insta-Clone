@@ -9,7 +9,7 @@ export default function CommentSection({ user, commentText }) {
       <UserName>{user}</UserName>
       <span>{commentText}</span>
     </CommentWrapper>
-  )
+  );
 }
 
 const CommentWrapper = styled.div`

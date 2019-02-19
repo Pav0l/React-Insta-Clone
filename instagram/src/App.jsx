@@ -6,29 +6,45 @@ import SearchBar from './components/SearchBar/Search';
 import PostContainer from './components/PostContainer/Post';
 
 
-function App() {
-  return (
-    <StyledAppWrapp>
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-      <SearchBar />
-      {
-        dummyData.map(item => (
-          <PostContainer
-            key={uuid()}
-            user={item.username}
-            userLogo={item.thumbnailUrl}
-            image={item.imageUrl}
-            likes={item.likes}
-            time={item.timestamp}
-            comments={item.comments}
-          />
-        ))
-      }
-    </StyledAppWrapp>
-  );
+    this.state = {
+      postsList: [],
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      postsList: dummyData,
+    });
+  }
+
+  render() {
+    const { postsList } = this.state;
+
+    return (
+      <StyledAppWrapp>
+
+        <SearchBar />
+        {
+          postsList.map(post => (
+            <PostContainer
+              key={uuid()}
+              user={post.username}
+              userLogo={post.thumbnailUrl}
+              image={post.imageUrl}
+              likes={post.likes}
+              time={post.timestamp}
+              comments={post.comments}
+            />
+          ))
+        }
+      </StyledAppWrapp>
+    );
+  }
 }
-
-export default App;
 
 const StyledAppWrapp = styled.div`
   display: flex;
