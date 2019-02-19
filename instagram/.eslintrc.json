@@ -5,5 +5,14 @@
         "react/forbid-prop-types": 0,
         "react/jsx-one-expression-per-line": 0,
         "quotes": 0
+    },
+    
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "spread": true
+        }
     }
 }
