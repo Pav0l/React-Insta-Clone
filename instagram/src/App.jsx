@@ -78,10 +78,6 @@ export default class App extends React.Component {
     });
   }
 
-  likeHandler = id => {
-    this.addLike(id);
-  }
-
   addLike = postId => {
     this.setState(prevState => {
       const likedPost = prevState.postsList.map(post => {
@@ -99,35 +95,38 @@ export default class App extends React.Component {
     });
   }
 
-  // clearInput = () => {
-  //   this.setState({
-  //     commentField: '',
-  //   })
-  // }
+  clearInput = () => {
+    this.setState({
+      commentField: '',
+    })
+  }
   
-  // commentChange = event => {
-  //   event.preventDefault();
-  //   this.setState({
-  //     commentField: event.target.value,
-  //   });
-  // }
+  commentChange = (event) => {
+    this.setState({
+      commentField: event.target.value,
+    });
+  }
 
-  // updateComment = (event, postId) => {
-  //   event.preventDefault();
-  //   this.setState(prevState => {
-  //     const commentedPost = prevState.postsList.map(post => {
-  //       if (post.id === postId) {
-  //         return post.comments.concat({
-  //           username: 'hackerUser',
-  //           text: this.state.commentField,
-  //         });
-  //       }
-  //       return {...post};
-  //     });
-  //     return {postsList: commentedPost};
-  //   });    
-  //   this.clearInput();
-  // }
+  updateComment = (postId) => {
+    this.setState(prevState => {
+      const commentedPost = prevState.postsList.map(post => {
+        if (post.id === postId) {
+          const commentsArr = post.comments.concat({
+            username: 'hackerUser',
+            text: this.state.commentField,
+          });
+          return {
+            ...post,
+            comments: commentsArr,
+          }
+        }
+        return {...post};
+      });
+      return {postsList: commentedPost};
+    });    
+    this.clearInput();
+  }
+
 
   render() {
     console.log('RENDER');
@@ -152,10 +151,11 @@ export default class App extends React.Component {
               likes={post.likes}
               time={post.timestamp}
               comments={post.comments}
-              likeHandler={this.likeHandler}
-              // updateComment={this.updateComment}
-              // commentChange={this.commentChange}
-              // commentField={this.state.commentField}
+
+              addLike={this.addLike}
+              updateComment={this.updateComment}
+              commentChange={this.commentChange}
+              commentField={this.state.commentField}
 
             />
           ))

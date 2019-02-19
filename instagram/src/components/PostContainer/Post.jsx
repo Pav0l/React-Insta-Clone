@@ -3,65 +3,89 @@ import uuid from 'uuid';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import CommentSection from '../CommentsSection/Comments';
+import AddComment from '../CommentsSection/AddComment';
 
-export default class PostContainer extends React.Component {
-  constructor(props) {
-    super(props);
+export default function PostContainer({
+  userLogo,
+  user,
+  image,
+  likes,
+  comments,
+  time,
+  id,
+  commentField,
+  addLike,
+  updateComment,
+  commentChange,
+}) {
+  const likeHandler = (event) => {
+    event.preventDefault();
+    addLike(id);
+  };
 
-    this.state = {
-      commentsList: props.comments,
-    };
-  }
+  const onChangeHandler = (event) => {
+    event.preventDefault();
+    commentChange(event);
+  };
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    updateComment(id);
+  };
 
-  render() {
-    return (
-      <WrapperDiv>
-        <UserNameDiv>
-          <ThumbUser src={this.props.userLogo} alt="user-thumbnail" />
-          <UserName>{this.props.user}</UserName>
-        </UserNameDiv>
+  return (
+    <WrapperDiv>
+      <UserNameDiv>
+        <ThumbUser src={userLogo} alt="user-thumbnail" />
+        <UserName>{user}</UserName>
+      </UserNameDiv>
 
-        <MainImg src={this.props.image} alt="main-img" />
+      <MainImg src={image} alt="main-img" />
 
-        <CommentSectionWrapper>
-          <IconsDiv>
-            <StyledIcon onClick={() => this.props.likeHandler(this.props.id)} className="far fa-heart" />
-            <StyledIcon className="far fa-comment" />
-          </IconsDiv>
-          <LikesDiv>{this.props.likes} likes</LikesDiv>
+      <CommentSectionWrapper>
+        <IconsDiv>
+          <StyledIcon onClick={likeHandler} className="far fa-heart" />
+          <StyledIcon className="far fa-comment" />
+        </IconsDiv>
+        <LikesDiv>{likes} likes</LikesDiv>
 
-          <CommentsDiv>
-            {
-              this.state.commentsList.map(comment => (
-                <CommentSection
-                  key={uuid()}
-                  user={comment.username}
-                  commentText={comment.text}
-                  time={this.props.time}
-                />
-              ))
-            }
-          </CommentsDiv>
+        <CommentsDiv>
+          {
+            comments.map(comment => (
+              <CommentSection
+                key={uuid()}
+                user={comment.username}
+                commentText={comment.text}
+                time={time}
+              />
+            ))
+          }
+        </CommentsDiv>
 
-          <TimeDiv>{this.props.time}</TimeDiv>
-        </CommentSectionWrapper>
+        <TimeDiv>{time}</TimeDiv>
+      </CommentSectionWrapper>
 
-        <StyledAddComment>
-          <AddCommentInput
-            type="text"
-            placeholder="Add a comment..."
-            // value={this.props.commentField}
-            // onChange= {this.props.commentChange}
-          />
-        </StyledAddComment>
-      </WrapperDiv>
-    );
-  }
+      <StyledAddComment type="submit" onSubmit={onSubmitHandler}>
+        <AddComment
+          commentField={commentField}
+          onChangeHandler={onChangeHandler}
+        />
+
+        {/* <AddCommentInput
+          type="text"
+          placeholder="Add a comment..."
+          value={commentField}
+          onChange={onChangeHandler}
+          key="input-key"
+        /> */}
+      </StyledAddComment>
+    </WrapperDiv>
+  );
 }
 
 PostContainer.defaultProps = {
   comments: [],
+  commentField: '',
 };
 
 PostContainer.propTypes = {
@@ -70,7 +94,12 @@ PostContainer.propTypes = {
   image: PropTypes.string.isRequired,
   likes: PropTypes.number.isRequired,
   time: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   comments: PropTypes.array,
+  commentField: PropTypes.string,
+  addLike: PropTypes.func.isRequired,
+  updateComment: PropTypes.func.isRequired,
+  commentChange: PropTypes.func.isRequired,
 };
 
 const WrapperDiv = styled.div`
@@ -144,13 +173,13 @@ const StyledAddComment = styled.form`
   margin: 0 auto;
 `;
 
-const AddCommentInput = styled.input`
-  padding: 1rem;
-  width: 95%;
-  color: #999;
-  font-size: 14px;
-  font-weight: 300;
-  opacity: 1;
-  margin: 0 auto;
-  border: none;
-`;
+// const AddCommentInput = styled.input`
+//   padding: 1rem;
+//   width: 95%;
+//   color: #999;
+//   font-size: 14px;
+//   font-weight: 300;
+//   opacity: 1;
+//   margin: 0 auto;
+//   border: none;
+// `;
