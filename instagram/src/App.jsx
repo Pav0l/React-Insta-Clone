@@ -27,9 +27,13 @@ export default class App extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('Component is rendered! localStorage updated');
-    localStorage.removeItem('postsList');
-    localStorage.setItem('postsList', JSON.stringify(this.state.postsList));
+    console.log('Component is UPDATED!');
+
+    if (JSON.parse(localStorage.getItem('postsList')) !== this.state.postsList) {
+      console.log('localStorage updated');
+      localStorage.removeItem('postsList');
+      localStorage.setItem('postsList', JSON.stringify(this.state.postsList));
+    }
   }
 
   componentDidMount() {
