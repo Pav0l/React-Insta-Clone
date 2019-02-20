@@ -70,14 +70,6 @@ export default function PostContainer({
           commentField={commentField}
           onChangeHandler={onChangeHandler}
         />
-
-        {/* <AddCommentInput
-          type="text"
-          placeholder="Add a comment..."
-          value={commentField}
-          onChange={onChangeHandler}
-          key="input-key"
-        /> */}
       </StyledAddComment>
     </WrapperDiv>
   );
@@ -172,14 +164,3 @@ const StyledAddComment = styled.form`
   width: 95%;
   margin: 0 auto;
 `;
-
-// const AddCommentInput = styled.input`
-//   padding: 1rem;
-//   width: 95%;
-//   color: #999;
-//   font-size: 14px;
-//   font-weight: 300;
-//   opacity: 1;
-//   margin: 0 auto;
-//   border: none;
-// `;

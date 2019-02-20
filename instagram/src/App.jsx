@@ -25,6 +25,10 @@ export default class App extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    console.log('Component is rendered!')
+  }
+
   componentDidMount() {
     console.log('componentDidMOUNT');
     this.setState({
@@ -129,7 +133,6 @@ export default class App extends React.Component {
 
 
   render() {
-    console.log('RENDER');
     const { postsList } = this.state;
     const onSearchFilteredList = postsList.filter(post => post.display === true);
 
@@ -143,7 +146,7 @@ export default class App extends React.Component {
         {
           onSearchFilteredList.map(post => (
             <PostContainer
-              key={uuid()}
+              key={post.id}
               id={post.id}
               user={post.username}
               userLogo={post.thumbnailUrl}
@@ -156,7 +159,6 @@ export default class App extends React.Component {
               updateComment={this.updateComment}
               commentChange={this.commentChange}
               commentField={this.state.commentField}
-
             />
           ))
         }
