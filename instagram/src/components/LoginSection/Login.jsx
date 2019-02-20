@@ -3,18 +3,19 @@ import styled from 'styled-components';
 
 export default class Login extends React.Component {
   state = {
-    isAuth: false,
-    userName: '',
+    password: '',
   }
 
-  onChangeHandler(event) {
+  passwordHandler = (event) => {
     event.preventDefault();
-    console.log('Hi changeHandler')
+    this.setState(prevState => ({
+      password: prevState.password.concat(event.target.value)
+    }));
   }
 
-  buttonHandler(event) {
+  onChangeHandler = (event) => {
     event.preventDefault();
-    console.log('Hi buttonHandler')
+    this.props.userNameUpdater(event);
   }
 
   render() {
@@ -28,7 +29,7 @@ export default class Login extends React.Component {
             type="text"
             name="userName"
             placeholder="Name"
-            value={this.state.userName}
+            value={this.props.userName}
             onChange={this.onChangeHandler}
           />
 
@@ -36,11 +37,11 @@ export default class Login extends React.Component {
             type="text"
             name="userPw"
             placeholder="Password"
-            value={this.state.userName}
-            onChange={this.onChangeHandler}
+            value={this.state.password}
+            onChange={this.passwordHandler}
           />
 
-          <StyledButton onClick={this.buttonHandler}>Log In</StyledButton>
+          <StyledButton onClick={this.props.buttonHandler}>Log In</StyledButton>
         </LoginForm>
       </DivWrapper>
     );
