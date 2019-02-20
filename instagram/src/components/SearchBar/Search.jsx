@@ -2,7 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export default function SearchBar({ searchVal, searchHandler }) {
+export default function SearchBar({ searchVal, searchHandler, logOut }) {
+  const userHandler = (event) => {
+    event.preventDefault();
+    logOut();
+  };
+
   return (
 
     <StyledWrapperNav>
@@ -21,13 +26,12 @@ export default function SearchBar({ searchVal, searchHandler }) {
             value={searchVal}
             onChange={searchHandler}
           />
-          {/* <StyledIcon className="fas fa-search" /> */}
         </StyledSearch>
 
         <div>
           <StyledIcon className="far fa-compass" />
           <StyledIcon className="far fa-heart" />
-          <StyledIcon className="far fa-user" />
+          <StyledIcon onClick={userHandler} className="far fa-user" />
         </div>
 
       </StyledWrapperDiv>
@@ -42,6 +46,7 @@ SearchBar.defaultProps = {
 SearchBar.propTypes = {
   searchVal: PropTypes.string,
   searchHandler: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
 };
 
 
@@ -119,4 +124,5 @@ const StyledIcon = styled.i`
   font-size: 20px;
   padding-left: 20px;
   font-weight: 300;
+  cursor: pointer;
 `;

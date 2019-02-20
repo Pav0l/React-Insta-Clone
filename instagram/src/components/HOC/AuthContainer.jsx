@@ -6,7 +6,7 @@ export default function authCheck(Posts, Login) {
       super(props);
 
       this.state = {
-        isAuth: false,
+        isAuth: JSON.parse(localStorage.getItem('isAuthed')) || false,
         userName: '',
       };
     }
@@ -20,11 +20,26 @@ export default function authCheck(Posts, Login) {
     buttonHandler = (event) => {
       event.preventDefault();
       this.setState({isAuth: true,})
+      localStorage.setItem('userName', this.state.userName);
+      localStorage.setItem('isAuthed', true);
+    }
+
+    logOut = () => {
+      localStorage.removeItem('isAuthed');
+      localStorage.removeItem('userName');
+      this.setState({ isAuth: false });
+      alert(`${this.state.userName} was logged out!`);
     }
 
     render() {
       if (this.state.isAuth) {
-        return <Posts {...this.props} user={this.state.userName} />;
+        return (
+          <Posts
+            {...this.props}
+            user={this.state.userName}
+            logOut={this.logOut}
+          />
+        );
       }
       return (
         <Login

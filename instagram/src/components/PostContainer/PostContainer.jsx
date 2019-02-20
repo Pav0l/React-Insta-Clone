@@ -127,6 +127,8 @@ export default class PostContainer extends React.Component {
     this.clearInput();
   }
 
+  
+
   render() {
 
     const { postsList } = this.state;
@@ -138,6 +140,7 @@ export default class PostContainer extends React.Component {
         <SearchBar
           searchVal={this.state.searchVal}
           searchHandler={this.searchHandler}
+          logOut={this.props.logOut}
         />
         {
           onSearchFilteredList.map(post => (
