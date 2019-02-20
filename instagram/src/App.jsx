@@ -11,7 +11,7 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      postsList: [],
+      postsList: JSON.parse(localStorage.getItem('postsList')) || [],
       searchVal: '',
       commentField: '',
     };
@@ -23,10 +23,13 @@ export default class App extends React.Component {
         id: uuid(),
       }
     });
+    console.log('Constructor RUN');
   }
 
   componentDidUpdate() {
-    console.log('Component is rendered!')
+    console.log('Component is rendered! localStorage updated');
+    localStorage.removeItem('postsList');
+    localStorage.setItem('postsList', JSON.stringify(this.state.postsList));
   }
 
   componentDidMount() {
@@ -133,6 +136,7 @@ export default class App extends React.Component {
 
 
   render() {
+    console.log('Render method RUN');
     const { postsList } = this.state;
     const onSearchFilteredList = postsList.filter(post => post.display === true);
 
