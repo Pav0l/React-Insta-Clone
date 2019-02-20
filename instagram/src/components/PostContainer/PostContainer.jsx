@@ -112,7 +112,7 @@ export default class PostContainer extends React.Component {
       const commentedPost = prevState.postsList.map(post => {
         if (post.id === postId) {
           const commentsArr = post.comments.concat({
-            username: 'hackerUser',
+            username: this.props.user,
             text: this.state.commentField,
           });
           return {

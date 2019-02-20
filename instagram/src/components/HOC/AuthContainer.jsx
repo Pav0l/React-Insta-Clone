@@ -12,8 +12,8 @@ export default function authCheck(Posts, Login) {
     }
 
     userNameUpdater = (event) => {
-      this.setState(prevState => ({
-        userName: prevState.userName.concat(event.target.value)
+      this.setState(({
+        userName: event.target.value
       }));
     }
     
@@ -24,7 +24,7 @@ export default function authCheck(Posts, Login) {
 
     render() {
       if (this.state.isAuth) {
-        return <Posts {...this.props} />;
+        return <Posts {...this.props} user={this.state.userName} />;
       }
       return (
         <Login

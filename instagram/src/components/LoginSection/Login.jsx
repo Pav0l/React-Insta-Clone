@@ -8,8 +8,8 @@ export default class Login extends React.Component {
 
   passwordHandler = (event) => {
     event.preventDefault();
-    this.setState(prevState => ({
-      password: prevState.password.concat(event.target.value)
+    this.setState(({
+      password: event.target.value
     }));
   }
 
@@ -34,7 +34,7 @@ export default class Login extends React.Component {
           />
 
           <InputField
-            type="text"
+            type="password"
             name="userPw"
             placeholder="Password"
             value={this.state.password}
