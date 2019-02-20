@@ -2,19 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
 import dummyData from './dummy-data';
-import SearchBar from './components/SearchBar/Search';
-import PostContainer from './components/PostContainer/Post';
+import PostContainer from './components/PostContainer/PostContainer';
 
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      postsList: JSON.parse(localStorage.getItem('postsList')) || [],
-      searchVal: '',
-      commentField: '',
-    };
 
     this.updateData = dummyData.map(post => {
       return {
@@ -23,12 +16,21 @@ export default class App extends React.Component {
         id: uuid(),
       }
     });
+
+    this.state = {
+      postsList: JSON.parse(localStorage.getItem('postsList')) || this.updateData,
+      searchVal: '',
+      commentField: '',
+    };
+
+
     console.log('Constructor RUN');
   }
 
   componentDidUpdate() {
     console.log('Component is UPDATED!');
 
+    // Check if this condition works correctly!
     if (JSON.parse(localStorage.getItem('postsList')) !== this.state.postsList) {
       console.log('localStorage updated');
       localStorage.removeItem('postsList');
@@ -38,9 +40,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     console.log('componentDidMOUNT');
-    this.setState({
-      postsList: this.updateData,
-    });
   }
 
   searchHandler = (event) => {
@@ -147,29 +146,18 @@ export default class App extends React.Component {
     return (
       <StyledAppWrapp>
 
-        <SearchBar
+        <PostContainer
+          onSearchFilteredList={onSearchFilteredList}
+
           searchVal={this.state.searchVal}
           searchHandler={this.searchHandler}
-        />
-        {
-          onSearchFilteredList.map(post => (
-            <PostContainer
-              key={post.id}
-              id={post.id}
-              user={post.username}
-              userLogo={post.thumbnailUrl}
-              image={post.imageUrl}
-              likes={post.likes}
-              time={post.timestamp}
-              comments={post.comments}
 
-              addLike={this.addLike}
-              updateComment={this.updateComment}
-              commentChange={this.commentChange}
-              commentField={this.state.commentField}
-            />
-          ))
-        }
+          addLike={this.addLike}
+          updateComment={this.updateComment}
+          commentChange={this.commentChange}
+          commentField={this.state.commentField}
+        />
+
       </StyledAppWrapp>
     );
   }

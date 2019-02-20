@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CommentSection from '../CommentsSection/Comments';
 import AddComment from '../CommentsSection/AddComment';
 
-export default function PostContainer({
+export default function Post({
   userLogo,
   user,
   image,
@@ -75,12 +75,12 @@ export default function PostContainer({
   );
 }
 
-PostContainer.defaultProps = {
+Post.defaultProps = {
   comments: [],
   commentField: '',
 };
 
-PostContainer.propTypes = {
+Post.propTypes = {
   user: PropTypes.string.isRequired,
   userLogo: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
