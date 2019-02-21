@@ -5,24 +5,18 @@ import Login from './components/LoginSection/Login';
 import authCheck from './components/HOC/AuthContainer';
 
 
-export default class App extends React.Component {
-  state = {
+export default function App() {
+  console.log('Render method in App RUN');
 
-  }
+  const AuthorizationComponent = authCheck(PostContainer, Login);
 
-   render() {
-    console.log('Render method in App RUN');
-    
-    const AuthorizationComponent = authCheck(PostContainer, Login);
-    
-    return (
-      <StyledAppWrapp>
+  return (
+    <StyledAppWrapp>
 
-        <AuthorizationComponent />
+      <AuthorizationComponent />
 
-      </StyledAppWrapp>
-    );
-  }
+    </StyledAppWrapp>
+  );
 }
 
 const StyledAppWrapp = styled.div`
