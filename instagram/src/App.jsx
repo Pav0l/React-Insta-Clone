@@ -6,8 +6,6 @@ import authCheck from './components/HOC/AuthContainer';
 
 
 export default function App() {
-  console.log('Render method in App RUN');
-
   const AuthorizationComponent = authCheck(PostContainer, Login);
 
   return (
