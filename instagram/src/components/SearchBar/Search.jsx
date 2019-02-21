@@ -31,7 +31,8 @@ export default function SearchBar({ searchVal, searchHandler, logOut }) {
         <div>
           <StyledIcon className="far fa-compass" />
           <StyledIcon className="far fa-heart" />
-          <StyledIcon onClick={userHandler} className="far fa-user" />
+          <StyledIcon className="far fa-user" />
+          <Styledbtn onClick={userHandler} type="submit">Log out</Styledbtn>
         </div>
 
       </StyledWrapperDiv>
@@ -124,5 +125,16 @@ const StyledIcon = styled.i`
   font-size: 20px;
   padding-left: 20px;
   font-weight: 300;
+  cursor: pointer;
+`;
+
+const Styledbtn = styled.button`
+  padding: 0.3rem 0.5rem;
+  margin-left: 0.5rem;
+  background-color: #3897f0;
+  border: 1px solid #3897f0;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
   cursor: pointer;
 `;
