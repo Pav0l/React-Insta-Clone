@@ -2,7 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export default function SearchBar({ searchVal, searchHandler, logOut }) {
+export default function SearchBar({
+  searchVal,
+  searchHandler,
+  logOut,
+  resetSearch,
+}) {
   const userHandler = (event) => {
     event.preventDefault();
     logOut();
@@ -26,6 +31,7 @@ export default function SearchBar({ searchVal, searchHandler, logOut }) {
             value={searchVal}
             onChange={searchHandler}
           />
+          <StyledIcon onClick={resetSearch} className="far fa-times-circle" />
         </StyledSearch>
 
         <div>
@@ -48,16 +54,14 @@ SearchBar.propTypes = {
   searchVal: PropTypes.string,
   searchHandler: PropTypes.func.isRequired,
   logOut: PropTypes.func.isRequired,
+  resetSearch: PropTypes.func.isRequired,
 };
 
 
 const StyledWrapperNav = styled.nav`
   background-color: #fff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.0975);
-  // position: fixed;
-  // top: 0;
   width: 100%;
-  // z-index: 1;
   transition: height 0.2s ease-in-out;
   height: 77px;
   display: flex;
@@ -72,7 +76,6 @@ const StyledWrapperDiv = styled.div`
   padding: 0 20px;
   width: 100%;
   transition: height 0.2s ease-in-out;
-  height: 77px;
   margin: 0 auto;
 `;
 
@@ -97,7 +100,6 @@ const StyleInsta = styled.div`
 
 const StyledLineDiv = styled.div`
   background-color: #262626;
-  height: 28px;
   margin: 0 16px;
   width: 1px;
 `;
@@ -109,22 +111,20 @@ const StyledInput = styled.input`
   opacity: 1;
   border: 1px solid #dbdbdb;
   border-radius: 3px;
-  padding: 3px 10px 3px 26px;
+  padding: 0.3rem 0.5rem;
   text-align: center;
 `;
 
 const StyledSearch = styled.div`
-  display: infline-flex;
-  position: relative;
-  height: 28px;
+  display: inline-flex;
   min-width: 125px;
-  width: 215px;
 `;
 
 const StyledIcon = styled.i`
   font-size: 20px;
   padding-left: 20px;
   font-weight: 300;
+  margin: auto 0;
   cursor: pointer;
 `;
 
