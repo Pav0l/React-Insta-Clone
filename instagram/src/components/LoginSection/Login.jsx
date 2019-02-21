@@ -14,11 +14,6 @@ export default function Login({
     setPassword(event.target.value);
   };
 
-  const onChangeHandler = (event) => {
-    event.preventDefault();
-    userNameUpdater(event);
-  };
-
   return (
     <DivWrapper>
       <StyleInsta>Instagram</StyleInsta>
@@ -30,7 +25,7 @@ export default function Login({
           name="userName"
           placeholder="Name"
           value={userName}
-          onChange={onChangeHandler}
+          onChange={userNameUpdater}
         />
 
         <InputField
