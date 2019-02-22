@@ -1,37 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import uuid from 'uuid';
+import PropTypes from 'prop-types';
 import dummyData from '../../dummy-data';
 import Post from './Post';
 import SearchBar from '../SearchBar/Search';
 
-export default class PostContainer extends React.Component {
-  constructor(props) {
-    super(props);
+export default function PostContainer({ user, logOut }) {
+  const updateData = dummyData.map((post) => {
+    return {
+      ...post,
+      display: true,
+      id: uuid(),
+    };
+  });
 
-    this.updateData = dummyData.map(post => {
+  const [postsList, setPostsList] = useState(JSON.parse(localStorage.getItem('postsList')) || updateData);
+  const [searchVal, setSearchVal] = useState('');
+  const [commentField, setCommentField] = useState('');
+
+  useEffect(() => {
+    // this is causing an infinite render-componentUpdate-render loop
+    // with this.setState it would be called as a callback after the state is set and updated.
+    if (searchVal !== '') {
+      searchPostUpdater(searchVal);
+    }
+  }, [searchVal]);
+
+  const updateStorage = () => {
+    if (localStorage.getItem('postsList') !== JSON.stringify(postsList)) {
+      localStorage.removeItem('postsList');
+      localStorage.setItem('postsList', JSON.stringify(postsList));
+    }
+  };
+
+  const resetSearch = () => {
+    setSearchVal('');
+    setPostsList(postsList.map((post) => {
       return {
         ...post,
         display: true,
-        id: uuid(),
-      }
-    });
+      };
+    }));
+  };
 
-    this.state = {
-      postsList: JSON.parse(localStorage.getItem('postsList')) || this.updateData,
-      searchVal: '',
-      commentField: '',
-    };
-  }
+  const searchPostUpdater = (searchInput) => {
+    setPostsList(
+      postsList.map((post) => {
+        const postUser = post.username.toLowerCase();
+        const showPostStat = postUser.includes(searchInput.toLowerCase());
+        if (!showPostStat) {
+          return {
+            ...post,
+            display: false,
+          };
+        }
+        return { ...post };
+      }),
+    );
+  };
 
-  componentDidUpdate() {
-    if (localStorage.getItem('postsList') !== JSON.stringify(this.state.postsList)) {
-      console.log('localStorage updated');
-      localStorage.removeItem('postsList');
-      localStorage.setItem('postsList', JSON.stringify(this.state.postsList));
-    }
-  }
+  const searchHandler = (event) => {
+    event.preventDefault();
+    setSearchVal(event.target.value);
+  };
 
+  /*
   searchHandler = (event) => {
     event.preventDefault();
 
@@ -43,129 +77,89 @@ export default class PostContainer extends React.Component {
       }
     });
   }
+  */
 
-  searchPostUpdater = searchInput => {
-    this.resetSearch();
-
-    this.setState(prevState => {
-      const searchList = prevState.postsList.map(post => {
-        const postUser = post.username.toLowerCase();
-        const showPostStat = postUser.includes(searchInput.toLowerCase());
-        if (!showPostStat) {
-          return {
-            ...post,
-            display: false,
-          };
-        }
-        return {...post,};
-      });
-
-      return {
-        postsList: searchList,
-      };
-    });
-  }
-
-  resetSearch = () => {
-    this.setState(prevState => {
-      const resetList = prevState.postsList.map(post => {
-        return {
-          ...post,
-          display: true,
-        };
-      });
-      return { postsList: resetList };
-    });
-  }
-
-  addLike = postId => {
-    this.setState(prevState => {
-      const likedPost = prevState.postsList.map(post => {
+  const addLike = (postId) => {
+    setPostsList(
+      postsList.map((post) => {
         if (post.id === postId) {
           const postLikes = post.likes;
-          let newLikes = postLikes + 1; 
+          const newLikes = postLikes + 1;
           return {
             ...post,
             likes: newLikes,
           };
         }
-        return {...post};
-      });
-      return {postsList: likedPost}
-    });
-  }
+        return { ...post };
+      }),
+    );
+  };
 
-  clearInput = () => {
-    this.setState({
-      commentField: '',
-    })
-  }
-  
-  commentChange = (event) => {
-    this.setState({
-      commentField: event.target.value,
-    });
-  }
+  const clearInput = () => {
+    setCommentField('');
+  };
 
-  updateComment = (postId) => {
-    this.setState(prevState => {
-      const commentedPost = prevState.postsList.map(post => {
+  const commentChange = (event) => {
+    setCommentField(event.target.value);
+  };
+
+  const updateComment = (postId) => {
+    setPostsList(
+      postsList.map((post) => {
         if (post.id === postId) {
           const commentsArr = post.comments.concat({
-            username: this.props.user,
-            text: this.state.commentField,
+            username: user,
+            text: commentField,
           });
           return {
             ...post,
             comments: commentsArr,
-          }
+          };
         }
-        return {...post};
-      });
-      return {postsList: commentedPost};
-    });    
-    this.clearInput();
-  }
-
-  
-
-  render() {
-
-    const { postsList } = this.state;
-    const onSearchFilteredList = postsList.filter(post => post.display === true);
-
-    return (
-      <StyledAppWrapp>
-
-        <SearchBar
-          searchVal={this.state.searchVal}
-          searchHandler={this.searchHandler}
-          logOut={this.props.logOut}
-        />
-        {
-          onSearchFilteredList.map(post => (
-            <Post
-              key={post.id}
-              id={post.id}
-              user={post.username}
-              userLogo={post.thumbnailUrl}
-              image={post.imageUrl}
-              likes={post.likes}
-              time={post.timestamp}
-              comments={post.comments}
-
-              addLike={this.addLike}
-              updateComment={this.updateComment}
-              commentChange={this.commentChange}
-              commentField={this.state.commentField}
-            />
-          ))
-        }
-      </StyledAppWrapp>
+        return { ...post };
+      }),
     );
-  }
+    clearInput();
+  };
+
+  const onSearchFilteredList = postsList.filter(post => post.display === true);
+
+  return (
+    <StyledAppWrapp>
+
+      <SearchBar
+        searchVal={searchVal}
+        searchHandler={searchHandler}
+        logOut={logOut}
+        resetSearch={resetSearch}
+      />
+      {
+        onSearchFilteredList.map(post => (
+          <Post
+            key={post.id}
+            id={post.id}
+            user={post.username}
+            userLogo={post.thumbnailUrl}
+            image={post.imageUrl}
+            likes={post.likes}
+            time={post.timestamp}
+            comments={post.comments}
+
+            addLike={addLike}
+            updateComment={updateComment}
+            commentChange={commentChange}
+            commentField={commentField}
+          />
+        ))
+      }
+    </StyledAppWrapp>
+  );
 }
 
+PostContainer.propTypes = {
+  user: PropTypes.string.isRequired,
+  logOut: PropTypes.func.isRequired,
+};
 
 const StyledAppWrapp = styled.div`
   display: flex;

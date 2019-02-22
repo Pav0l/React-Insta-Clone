@@ -1,52 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-export default class Login extends React.Component {
-  state = {
-    password: '',
-  }
+export default function Login({
+  buttonHandler,
+  userNameUpdater,
+  userName,
+}) {
+  const [password, setPassword] = useState('');
 
-  passwordHandler = (event) => {
+  const passwordHandler = (event) => {
     event.preventDefault();
-    this.setState(({
-      password: event.target.value
-    }));
-  }
+    setPassword(event.target.value);
+  };
 
-  onChangeHandler = (event) => {
-    event.preventDefault();
-    this.props.userNameUpdater(event);
-  }
+  return (
+    <DivWrapper>
+      <StyleInsta>Instagram</StyleInsta>
+      <StyledText>Sign up to see photos and videos from your friends.</StyledText>
 
-  render() {
-    return (
-      <DivWrapper>
-        <StyleInsta>Instagram</StyleInsta>
-        <StyledText>Sign up to see photos and videos from your friends.</StyledText>
+      <LoginForm>
+        <InputField
+          type="text"
+          name="userName"
+          placeholder="Name"
+          value={userName}
+          onChange={userNameUpdater}
+        />
 
-        <LoginForm>
-          <InputField
-            type="text"
-            name="userName"
-            placeholder="Name"
-            value={this.props.userName}
-            onChange={this.onChangeHandler}
-          />
+        <InputField
+          type="password"
+          name="userPw"
+          placeholder="Password"
+          value={password}
+          onChange={passwordHandler}
+        />
 
-          <InputField
-            type="password"
-            name="userPw"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.passwordHandler}
-          />
-
-          <StyledButton onClick={this.props.buttonHandler}>Log In</StyledButton>
-        </LoginForm>
-      </DivWrapper>
-    );
-  }
+        <StyledButton onClick={buttonHandler}>Log In</StyledButton>
+      </LoginForm>
+    </DivWrapper>
+  );
 }
+
+Login.defaultProps = {
+  userName: '',
+};
+
+Login.propTypes = {
+  userName: PropTypes.string,
+  buttonHandler: PropTypes.func.isRequired,
+  userNameUpdater: PropTypes.func.isRequired,
+};
+
 
 const DivWrapper = styled.div`
   display: flex;
